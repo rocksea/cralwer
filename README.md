@@ -1,4 +1,4 @@
-# Naver 지식인 Crawler
+# Web Crawler
 Text Mining을 위한 데이터 수집용 크롤러
 
 # New Features
