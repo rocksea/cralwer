@@ -23,29 +23,29 @@ class NaverKinSpider(scrapy.Spider):
         item = NaverKinItem()
 
         #print("#### Resp Body: \n %s" % response.body)
+        for resultArea in response.xpath(r'//*[@id="elThumbnailResultArea"]/li'):
+            title = resultArea.xpath(r'dl/dt/a')[0].extract()
+            title = re.sub(r'<.*?>','',title) #strip html
+            print("#### title : %s" % title)
 
-        title = response.xpath(r'//*[@id="elThumbnailResultArea"]/li[1]/dl/dt/a')[0].extract()
-        title = re.sub(r'<.*?>','',title) #strip html
-        print("#### title : %s" % title)
+            content = resultArea.xpath(r'dl/dd[2]')[0].extract()
+            content = re.sub(r'<.*?>','',content) #strip html
+            print("#### content : %s" % content)
 
-        content = response.xpath(r'//*[@id="elThumbnailResultArea"]/li[1]/dl/dd[2]')[0].extract()
-        content = re.sub(r'<.*?>','',content) #strip html
-        print("#### content : %s" % content)
+            qDt = resultArea.xpath(r'dl/dd[1]/text()')[0].extract()
+            qDt = re.sub(r'([0-9]{4}.[0-9]{2}.[0-9]{2}).*',r'\1',qDt).replace('.','-') #Formatting DateType
+            print("#### question Date : %s" % qDt)
 
-        qDt = response.xpath(r'//*[@id="elThumbnailResultArea"]/li[1]/dl/dd[1]/text()')[0].extract()
-        qDt = re.sub(r'([0-9]{4}.[0-9]{2}.[0-9]{2}).*',r'\1',qDt).replace('.','-') #Formatting DateType
-        print("#### question Date : %s" % qDt)
+            aContent = resultArea.xpath(r'dl/dd[3]')[0].extract()
+            aContent = re.sub(r'<.*?>','',aContent) #strip html
+            print("#### answer : %s" % aContent)
 
-        aContent = response.xpath(r'//*[@id="elThumbnailResultArea"]/li[1]/dl/dd[3]')[0].extract()
-        aContent = re.sub(r'<.*?>','',aContent) #strip html
-        print("#### answer : %s" % aContent)
+            #Setting item
+            item['qTitle'] = title
+            item['qContent'] = content
+            item['qDt'] = qDt
+            item['aDt'] = ''
 
-        #Setting item
-        item['qTitle'] = title
-        item['qContent'] = content
-        item['qDt'] = qDt
-        item['aDt'] = ''
+            time.sleep(5)
 
-        time.sleep(5)
-
-        yield item
+            yield item
