@@ -18,7 +18,7 @@ $ pip install scrapy
 $ pip install scrapy_user_agents # random user-agent 생성
 ```
 
-pymyqsl 설치(optional)
+pymysql 설치(optional)
 ```sh
 $ pip install pymysql
 ```
