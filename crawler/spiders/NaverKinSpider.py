@@ -8,13 +8,18 @@ from crawler.items import NaverKinItem
 
 class NaverKinSpider(scrapy.Spider):
     name = "NaverKinCrawler"
-    otaId = 1
+
+    def __init__(self, keyword='', **kwargs):
+        self.keyword = keyword
+        self.download_delay = 5
+        super().__init__(**kwargs)
+
     def start_requests(self):
         now = datetime.now()
 	
-        for page in range(1) :
+        for page in range(5) :
            params = {'kin_start':(page*10)+1}
-           url = "https://search.naver.com/search.naver?where=kin&kin_display=10&query=%EC%84%9C%EC%9A%B8%EB%8C%80&sm=tab_pge&kin_start={}".format(params['kin_start'])
+           url = "https://search.naver.com/search.naver?where=kin&kin_display=10&query={}&sm=tab_pge&kin_start={}".format(self.keyword, params['kin_start'])
            request = scrapy.Request(url, self.parse_data)
            request.meta['params'] = params
            yield request
@@ -45,7 +50,5 @@ class NaverKinSpider(scrapy.Spider):
             item['qContent'] = content
             item['qDt'] = qDt
             item['aDt'] = ''
-
-            time.sleep(5)
 
             yield item
