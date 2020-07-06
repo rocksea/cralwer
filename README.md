@@ -33,7 +33,7 @@ $ scrapy crawl [크롤러명]
 #### Example
 Naver 지식인 Crawler 실행 명령:
 ```sh
-$ scrapy crawl NaverKinCrawler
+$ scrapy crawl NaverKinCrawler -a keyword=키워드
 ```
 
 ### TODO list
