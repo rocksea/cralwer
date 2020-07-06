@@ -17,7 +17,7 @@ class NaverKinSpider(scrapy.Spider):
     def start_requests(self):
         now = datetime.now()
 	
-        for page in range(5) :
+        for page in range(10) :
            params = {'kin_start':(page*10)+1}
            url = "https://search.naver.com/search.naver?where=kin&kin_display=10&query={}&sm=tab_pge&kin_start={}".format(self.keyword, params['kin_start'])
            request = scrapy.Request(url, self.parse_data)
@@ -48,6 +48,7 @@ class NaverKinSpider(scrapy.Spider):
             #Setting item
             item['qTitle'] = title
             item['qContent'] = content
+            item['aContent'] = aContent
             item['qDt'] = qDt
             item['aDt'] = ''
 
